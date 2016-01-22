@@ -237,14 +237,19 @@
     <!-- Function scripts -->  
     
 <script type="text/javascript">
+
   function initialize() {
+
     google.maps.visualRefresh = true;
+
     var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) ||
       (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
+
     if (isMobile) {
       var viewport = document.querySelector("meta[name=viewport]");
       viewport.setAttribute('content', 'initial-scale=1.0, user-scalable=no');
     }
+
     var mapDiv = document.getElementById('googft-mapCanvas');
     mapDiv.style.width = isMobile ? '100%' : '100%';
     mapDiv.style.height = isMobile ? '100%' : '100%';
@@ -253,8 +258,9 @@
       zoom: 16,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
-    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
+
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend-open'));
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend'));
 
     layer = new google.maps.FusionTablesLayer({
       map: map,
