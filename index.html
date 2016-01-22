@@ -228,15 +228,14 @@
 		
     <!-- OpenLayers scriptit -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://openlayers.org/en/v3.11.1/build/ol.js"></script>
-    <link rel="stylesheet" href="http://openlayers.org/en/v3.11.1/css/ol.css" type="text/css">
    
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=visualization&amp;sensor=false"></script>
 
 
 
-    <!-- Toiminnallisuus scriptit -->    
+    <!-- Function scripts -->  
+    
 <script type="text/javascript">
   function initialize() {
     google.maps.visualRefresh = true;
@@ -293,7 +292,7 @@
 </script>
     
 
-<!-- Sivupalkin piilotus -->
+<!-- Hiding the side panel -->
     <script>
       function toggleControlPanel(){
         var sidebar = document.getElementById("sidebar");
@@ -366,14 +365,14 @@ style="background-color: #4c1130"></span>
     	  <h1><span>Buildings</span> <span>on the map</span></h1>
        
   	  <div class="ol-toggle-options">  
-	   <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Valikko</button>   
+	   <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Menu</button>   
     	  </div>
 	</div>
     
 
 	<div id='sidebar' class='sidebar' style="display: none;">
             
-    	<button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Sulje valikko</button>   
+    	<button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
 	<br><br>  
 
 <!--	Näytettävät kohteet:
