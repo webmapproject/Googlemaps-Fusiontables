@@ -134,7 +134,7 @@
 	}	
 
 	/* Styles used by the default GetFeatureInfo output, added to make IE happy */
-        table.featureInfo, table.featureInfo td, table.featureInfo th {
+/*        table.featureInfo, table.featureInfo td, table.featureInfo th {
             border: 1px solid #ddd;
             border-collapse: collapse;
             margin: 0;
@@ -159,46 +159,13 @@
             font-weight: bold;
             padding: .2em .2em;
         }
+*/
 
-/* For different screen sizes */
-
-/* small screen */
- @media screen and (max-width:549px) { 
-	h1{
-        font-size:24px}
-	.ol-toggle-options {
-          z-index: 1000;
-          position:absolute;
-          right: 7px;
-          bottom: 3px;
-	}
-    /* .btn{padding:5px 11px;} */
-	div span:last-of-type {
-        display: block;}
-	}
-
-/* medium screen */
- @media screen and (min-width: 550px) and (max-width:800px) { 
-	h1{
-        font-size:30px;}
-	.ol-toggle-options {
-          z-index: 1000;
-          position:absolute;
-          right: 10px;
-          bottom: 10px;
-	}
-	}
-/* large screen */
-@media screen and (min-width: 801px) { 
-	h1{
-        font-size:36px;}
-	.ol-toggle-options {
-          z-index: 1000;
-          position:absolute;
-          right: 10px;
-          bottom: 15px;
-	}
-	}
+#slider {
+  height: 20px;
+  margin: 0 auto 30px;
+  width: 500px;
+}
 
     </style>
   </head>
@@ -391,6 +358,9 @@ style="background-color: #4c1130"></span>
             
     	<button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
 
+	<div id="slider">
+
+        </div>
 	<br><br>
    
     <!-- Adds the map according to the screen size -->
