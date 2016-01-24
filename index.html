@@ -117,28 +117,6 @@
 	  border-radius: 30px;
 	}
 
-/* tarvitaanko tata? 
-	.ol-toggle-options a {
-          background: rgba(255,255,255,0.5);
-          color: white;
-          display: block;
-          font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
-          font-size: 19px;
-          font-weight: bold;
-          height: 18px;
-          line-height: 11px;
-          margin: 1px;
-          padding: 0;
-          text-align: center;
-          text-decoration: none;
-          width: 55px;
-          border-radius: 2px;
-        }
-        .ol-toggle-options a:hover {
-          color: #fff;
-          text-decoration: none;
-          background: rgba(0,60,136,0.7);
-        } */
 
 	.sidebar {
 	position:absolute;
@@ -181,9 +159,9 @@
             padding: .2em .2em;
         }
 
-/* erikokoisten nayttojen erot */
+/* For different screen sizes */
 
-/* pieni naytto */
+/* small screen */
  @media screen and (max-width:549px) { 
 	h1{
         font-size:24px}
@@ -198,7 +176,7 @@
         display: block;}
 	}
 
-/* keskikokoinen naytto */
+/* medium screen */
  @media screen and (min-width: 550px) and (max-width:800px) { 
 	h1{
         font-size:30px;}
@@ -209,7 +187,7 @@
           bottom: 10px;
 	}
 	}
-/* iso naytto */
+/* large screen */
 @media screen and (min-width: 801px) { 
 	h1{
         font-size:36px;}
@@ -381,46 +359,14 @@ style="background-color: #4c1130"></span>
     	<button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
 	<br><br>  
 
-<!--	Näytettävät kohteet:
-	<select id="filtering_wfs" onchange="update()">
-          <option value="">Kaikki kohteet</option>
-	  <option value="&CQL_FILTER=tyyppikoodi= 2120">Kuntosalit</option>
-          <option value="&CQL_FILTER=tyyppikoodi BETWEEN 3000 AND 3999">Uintikohteet</option>
-	  <option value="&CQL_FILTER=tyyppikoodi BETWEEN 4000 AND 4999">Maastoliikuntapaikat</option>  
-        </select>
--->   
-	<!-- Filtteröinnille valikko wms
-	Näytettävät kohteet:
-	<select id="filtering" onchange="updateFilter(value)">
-            <option value="BETWEEN 0 AND 99999999999999">Kaikki kohteet</option>
-	    <option value="= 2120">Kuntosalit</option>
-            <option value="BETWEEN 3000 AND 3999">Uintikohteet</option>
-        </select>
--->
-	<br><br>
-    	
-	<!-- Paikannukselle nappula, tällä hetkellä asettaa reitinhaun aloitussijainnin -->
-<!--	<input type="checkbox" name="track" id="track"> Näytä oma sijainti</input>
-	<br> -->
 
-	<!-- Painettuna mahdollistaa uuden aloitussijainnin maarittamisen -->
-<!--	<button id="new_start" class="btn btn-primary">Lisää aloitussijainti</button>
-	<button class="btn btn-primary btn-round" onclick="alert('Lisää aloitussijainti navigoinnille.\nKlikkaa ensin Lisää aloitussijainti ja sitten haluamaasi kohtaa kartalla')">i</button>
-	<br>
--->	
-    <!-- Lisaa kartan halutulla koolla -->
+	<br><br>
+   
+    <!-- Adds the map according to the screen size -->
     <div class="container-fluid">
 	<div id="map">
     </div>
    
- 
-    <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
-<!--    <div class="container-fluid">
-	<div id="footer">
-    	  <p> Web Map Project</p>
-	</div>
-    </div>
--->  
   </body>
 </html>
 
