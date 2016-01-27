@@ -4,19 +4,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-cabaple" content="yes"> 
-
     <link href="nouislider.min.css" rel="stylesheet">
     <!-- Bootstarp scriptit -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <title>History of Helsinki buildings</title>
     <style>
-	    html, body, #googft-mapCanvas {
-	overflow:hidden;
-	height:99%;
-	}
+      html, body, #googft-mapCanvas {
+  overflow:hidden;
+  height:100%;
+  }
           #header {
   background-color:black;
   color:teal;
@@ -29,8 +28,8 @@
   top:0;
   }
       #footer {
-  background-color:black;
-  color:teal;
+  background-color:#FF6600;
+  color:black;
   clear:both;
   text-align:left;
   position:absolute;
@@ -38,6 +37,12 @@
   bottom:0;
   left:0;
   right:0;
+  }
+      #map {
+  width:100%;
+  height:100%;
+  position:absolute;
+  left:0; 
   }
 
 #googft-legend {
@@ -98,75 +103,44 @@
 
 
 
-	.btn {
-	  margin:3px;
-	} 
+  .btn {
+    margin:3px;
+  } 
 
-  	.btn-round { 
-	  font-weight: bold;
-	  width: 19px;
-	  height: 19px;
-	  text-align: center;
-	  padding: 1px 0;
-	  font-size: 13px;
-	  line-height: 0.1;
-	  border-radius: 30px;
-	}
+    .btn-round { 
+    font-weight: bold;
+    width: 19px;
+    height: 19px;
+    text-align: center;
+    padding: 1px 0;
+    font-size: 13px;
+    line-height: 0.1;
+    border-radius: 30px;
+  }
 
+  .sidebar {
+  position:absolute;
+  top:0; right:0; width:250px;
+  bottom:0;
+  overflow-x:auto;
+  background-color:teal;
+  margin:0;
+  padding:5px;
+  font-size:15px;
+  border-radius:10px;
+  text-align:center;
+  z-index:80;
+  } 
 
-	.sidebar {
-	position:absolute;
-	top:0; right:0; width:250px;
- 	bottom:0;
-	overflow-x:auto;
-	background-color:#ffcc00;
-	margin:0;
-	padding:5px;
-	font-size:15px;
-	border-radius:10px;
-	text-align:center;
-	z-index:80;
-	}	
-
-	/* Styles used by the default GetFeatureInfo output, added to make IE happy */
-/*        table.featureInfo, table.featureInfo td, table.featureInfo th {
-            border: 1px solid #ddd;
-            border-collapse: collapse;
-            margin: 0;
-            padding: 0;
-            font-size: 90%;
-            padding: .2em .1em;
-        }
-        table.featureInfo th {
-            padding: .2em .2em;
-            font-weight: bold;
-            background: #eee;
-        }
-        table.featureInfo td {
-            background: #fff;
-        }
-        table.featureInfo tr.odd td {
-            background: #eee;
-        }
-        table.featureInfo caption {
-            text-align: left;
-            font-size: 100%;
-            font-weight: bold;
-            padding: .2em .2em;
-        }
-*/
-
+  }
 #slider {
   height: 20px;
   margin: 0 auto 30px;
   width: 500px;
 }
-
     </style>
   </head>
 
-<!--  <body onload="init()"> -->
-		
     <!-- google scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
    
@@ -176,14 +150,11 @@
 
 
     <!-- Function scripts -->  
-        <script src="nouislider.min.js"></script>
-        
+    <script src="nouislider.min.js"></script>
 <script type="text/javascript">
 
 
-
-
-$( document ).ready(function() {
+  $( document ).ready(function() {
      var slider = document.getElementById('slider');
 
     noUiSlider.create(slider, {
@@ -226,28 +197,30 @@ $( document ).ready(function() {
     mapDiv.style.width = isMobile ? '100%' : '100%';
     mapDiv.style.height = isMobile ? '100%' : '100%';
     var map = new google.maps.Map(mapDiv, {
-      center: new google.maps.LatLng(60.16199466214881, 24.9424015570944),
-      zoom: 16,
+      center: new google.maps.LatLng(60.18199466214881, 24.9424015570944),
+      zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend-open'));
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend'));
 
+    var t = slider.noUiSlider.get();
+    
     layer = new google.maps.FusionTablesLayer({
       map: map,
       heatmap: { enabled: false },
       query: {
         select: "col21",
         from: "1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960",
-        where: ""
+        where: "Rakennusvuosi >= " + t[0] + " AND Rakennusvuosi <= " + t[1]
       },
       options: {
-        styleId: 2,
+        styleId: 1, //if u put "2" here, then buildings will be coloured by type
         templateId: 2
       }
     });
-
+    //console.log(layer);
     if (isMobile) {
       var legend = document.getElementById('googft-legend');
       var legendOpenButton = document.getElementById('googft-legend-open');
@@ -267,7 +240,6 @@ $( document ).ready(function() {
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
-  
 </script>
     
 
@@ -335,43 +307,47 @@ style="background-color: #4c1130"></span>
       <a href="http://www.google.com/fusiontables/DataSource?docid=1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960" target="_blank"></a>
     </div>
     <input id="googft-legend-close" style="display:none" type="button" value="Hide"></input>
-  </div> 
+  </div>
 
 
-    <!-- Header section -->
-   <div class="container-fluid">
-   	<div id="header">
-    	  <h1><span>Buildings</span> <span>on the map</span></h1>
+    <!-- Header osio, johon tulee otsikko ja ehka joki valikko -->
+    <div class="container-fluid">
+    <div id="header">
+        <h1><span>History of Helsinki Buildings</span></h1>
        
-  	  <div class="ol-toggle-options">  
-	   <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Menu</button>   
-    	  </div>
-	</div>
+      <div class="ol-toggle-options">  
+     <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Menu</button>   
+        </div>
+        <div id="slider">
+
+        </div>
+        <div>
+        </div>
+        <div style="height:20px;">
+        </div>
+  </div>
     
 
-	<div id='sidebar' class='sidebar' style="display: none;">
+  <div id='sidebar' class='sidebar' style="display: none;">
             
-    	<button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
+      <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
+  <br><br>  
 
-
-	<br><br>
-   	</div>
-
-    <!-- Adds the map -->
+  <br><br>
+      
+    <!-- Lisaa kartan halutulla koolla -->
     <div class="container-fluid">
-	<div id="map">
+  <div id="map">
     </div>
    
-    <div class="container-fluid">
-	<div id="slider">
-        </div>
-        <div id="footer">
-    	 <p> Web Map Project </p>
-	</div>
-
-	
+ 
+    <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
+<!--    <div class="container-fluid">
+  <div id="footer">
+        <p> Web Map Project</p>
+  </div>
     </div>
-   
+-->  
   </body>
 </html>
 
