@@ -6,10 +6,10 @@
     <meta name="apple-mobile-web-app-cabaple" content="yes"> 
     <link href="nouislider.min.css" rel="stylesheet">
     <!-- Bootstarp scriptit -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <title>History of Helsinki buildings</title>
     <style>
       html, body, #googft-mapCanvas {
@@ -17,8 +17,8 @@
   height:100%;
   }
           #header {
-  background-color:rgba(255,255,255,0.8);
-  color:teal;
+  background-color:black;
+  color:white;
   text-align:center;
   font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
   position:absolute;
@@ -118,12 +118,35 @@
     border-radius: 30px;
   }
 
+/* tarvitaanko tata? 
+  .ol-toggle-options a {
+          background: rgba(255,255,255,0.5);
+          color: white;
+          display: block;
+          font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+          font-size: 19px;
+          font-weight: bold;
+          height: 18px;
+          line-height: 11px;
+          margin: 1px;
+          padding: 0;
+          text-align: center;
+          text-decoration: none;
+          width: 55px;
+          border-radius: 2px;
+        }
+        .ol-toggle-options a:hover {
+          color: #fff;
+          text-decoration: none;
+          background: rgba(0,60,136,0.7);
+        } */
+
   .sidebar {
   position:absolute;
-  top:50px; right:0; width:250px;
+  top:0; right:0; width:250px;
   bottom:0;
   overflow-x:auto;
-  background-color:rgba(255,255,255,0.8);
+  background-color:teal;
   margin:0;
   padding:5px;
   font-size:15px;
@@ -132,14 +155,101 @@
   z-index:80;
   } 
 
+  /* Styles used by the default GetFeatureInfo output, added to make IE happy */
+        table.featureInfo, table.featureInfo td, table.featureInfo th {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            font-size: 90%;
+            padding: .2em .1em;
+        }
+        table.featureInfo th {
+            padding: .2em .2em;
+            font-weight: bold;
+            background: #eee;
+        }
+        table.featureInfo td {
+            background: #fff;
+        }
+        table.featureInfo tr.odd td {
+            background: #eee;
+        }
+        table.featureInfo caption {
+            text-align: left;
+            font-size: 100%;
+            font-weight: bold;
+            padding: .2em .2em;
+        }
+
+/* erikokoisten nayttojen erot */
+
+/* pieni naytto */
+ @media screen and (max-width:549px) { 
+  h1{
+        font-size:24px}
+  .ol-toggle-options {
+          z-index: 1000;
+          position:absolute;
+          right: 7px;
+          bottom: 3px;
+  }
+    /* .btn{padding:5px 11px;} */
+  div span:last-of-type {
+        display: block;}
+  }
+
+/* keskikokoinen naytto */
+ @media screen and (min-width: 550px) and (max-width:800px) { 
+  h1{
+        font-size:30px;}
+  .ol-toggle-options {
+          z-index: 1000;
+          position:absolute;
+          right: 10px;
+          bottom: 10px;
+  }
+  }
+/* iso naytto */
+@media screen and (min-width: 801px) { 
+  h1{
+        font-size:36px;}
+  .ol-toggle-options {
+          z-index: 1000;
+          position:absolute;
+          right: 10px;
+          bottom: 15px;
+  }
+  }
 #slider {
   height: 20px;
   margin: 0 auto 30px;
   width: 500px;
 }
+#beginYear span
+{
+  color:white;
+}
+#beginSpan
+{
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#endYear span
+{
+  color:white;
+}
+#endSpan
+{
+  font-size: 12px;
+  font-weight: bold;
+}
     </style>
   </head>
 
+  <body onload="init()">
+    
     <!-- google scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
    
@@ -153,36 +263,22 @@
 <script type="text/javascript">
 
 
-  $( document ).ready(function() {
-     var slider = document.getElementById('slider');
-
-    noUiSlider.create(slider, {
-  start: [ 1700, 2013 ], // Handle start position
-  //step: 10, // Slider moves in increments of '10'
-  margin: 10, // Handles must be more than '20' apart
-  connect: true, // Display a colored bar between the handles
-  direction: 'ltr', // Put '0' at the bottom of the slider
-  orientation: 'horizontal', // Orient the slider vertically
-  behaviour: 'tap-drag', // Move handle on tap, bar is draggable
-  range: { // Slider can select '0' to '100'
-    'min': 1900,
-    'max': 2013
-  },
-  pips: { // Show a scale with the slider
-    mode: 'steps',
-    density: 2
-  }
-});
-    slider.noUiSlider.on('end', function(){
-  initialize();
-});
-});
 
 
+  var googlemap;
+  var sliderSet;
+  var mapType;
 
   function initialize() {
+    var latSet = new google.maps.LatLng(60.18199466214881, 24.9424015570944);
+    mapType = google.maps.MapTypeId.ROADMAP;
+      update(13, latSet, mapType);
+      setBoarders();
 
-    google.maps.visualRefresh = true;
+    }
+    function update(currentView, centercoords, maptype)
+    {
+          google.maps.visualRefresh = true;
 
     var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) ||
       (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
@@ -195,17 +291,23 @@
     var mapDiv = document.getElementById('googft-mapCanvas');
     mapDiv.style.width = isMobile ? '100%' : '100%';
     mapDiv.style.height = isMobile ? '100%' : '100%';
-    var map = new google.maps.Map(mapDiv, {
-      center: new google.maps.LatLng(60.18199466214881, 24.9424015570944),
-      zoom: 13,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
 
+var mapOptions = {
+      center: centercoords,
+      zoom: currentView,
+      mapTypeId: maptype
+
+
+
+    };
+
+    var map = new google.maps.Map(mapDiv, mapOptions);
+    googlemap = map;
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend-open'));
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend'));
 
     var t = slider.noUiSlider.get();
-    
+        
     layer = new google.maps.FusionTablesLayer({
       map: map,
       heatmap: { enabled: false },
@@ -215,7 +317,7 @@
         where: "Rakennusvuosi >= " + t[0] + " AND Rakennusvuosi <= " + t[1]
       },
       options: {
-        styleId: 1, //if u put "2" here, then buildings will be coloured by type
+        styleId: 1, 
         templateId: 2
       }
     });
@@ -239,6 +341,88 @@
   }
 
   google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    $( document ).ready(function() {
+     var slider = document.getElementById('slider');
+
+    sliderSet = noUiSlider.create(slider, {
+  start: [ 1700, 2013 ], // Handle start position
+  //step: 10, // Slider moves in increments of '10'
+  margin: 1, // Handles must be more than '20' apart
+  connect: true, // Display a colored bar between the handles
+  direction: 'ltr', // Put '0' at the bottom of the slider
+  orientation: 'horizontal', // Orient the slider vertically
+  behaviour: 'tap-drag', // Move handle on tap, bar is draggable
+  range: { // Slider can select '0' to '100'
+    'min': 1800,
+    'max': 2013
+  },
+  pips: { // Show a scale with the slider
+    mode: 'steps',
+    density: 2
+  }
+});
+slider.noUiSlider.on('end', function(){
+      var zoomi = googlemap.getZoom();
+      var centercoords = googlemap.getCenter();
+
+  update(zoomi, centercoords, mapType);
+});
+
+slider.noUiSlider.on('update', function(){
+  setDownBoarderhover();
+  setTopBoarderhover();
+});
+
+});
+
+    function setDownBoarderhover() {
+      $('.noUi-handle-lower').children().remove('div');
+      var t = sliderSet.get();
+      $('.noUi-handle-lower').append('<div id="beginYear"><br/><br/><span id="beginSpan">' + Math.round(t[0]) + '</span></div>');
+    }
+    function setTopBoarderhover() {
+      $('.noUi-handle-upper').children().remove('div');
+      var t = sliderSet.get();
+      $('.noUi-handle-upper').append('<div id="endYear"><br/><br/><span id="endSpan">' + Math.round(t[1]) + '</span></div>');
+    }
+
+function setBoarders() {
+      setDownBoarderhover();
+      setTopBoarderhover();
+}
+function handleChange(arvo) {
+  if(arvo == 0)
+  {
+    var zoomi = googlemap.getZoom();
+    var centercoords = googlemap.getCenter();
+    mapType = google.maps.MapTypeId.SATELLITE;
+    update(zoomi, centercoords, mapType);
+  }
+  if(arvo == 1)
+  {
+    var zoomi = googlemap.getZoom();
+    var centercoords = googlemap.getCenter();
+    mapType = google.maps.MapTypeId.ROADMAP;
+    update(zoomi, centercoords, mapType);
+  }
+  if(arvo == 2)
+  {
+    var zoomi = googlemap.getZoom();
+    var centercoords = googlemap.getCenter();
+    mapType = google.maps.MapTypeId.HYBRID;
+    update(zoomi, centercoords, mapType);
+  }
+  if(arvo == 3)
+  {
+    var zoomi = googlemap.getZoom();
+    var centercoords = googlemap.getCenter();
+
+    mapType = google.maps.MapTypeId.TERRAIN;
+    update(zoomi, centercoords, mapType);
+  }
+}
 </script>
     
 
@@ -261,6 +445,7 @@
   <div id="googft-mapCanvas"></div>
   <input id="googft-legend-open" style="display:none" type="button" value="Legend"></input>
   <div id="googft-legend">
+
     <p id="googft-legend-title">Building year</p>
     <div>
       <span class="googft-legend-swatch" 
@@ -312,35 +497,69 @@ style="background-color: #4c1130"></span>
     <!-- Header osio, johon tulee otsikko ja ehka joki valikko -->
     <div class="container-fluid">
     <div id="header">
-        <h1><span>History of Helsinki Buildings</span></h1>
+        <h1><span>Helsinki Building years</span></h1>
        
-<!--      <div class="ol-toggle-options">  
+      <div class="ol-toggle-options">  
      <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Menu</button>   
         </div>
--->         <div id="slider">
+        <div id="slider">
 
         </div>
-<!--        <div>
+        <div>
+
         </div>
--->        <div style="height:20px;">
-       </div>
+        <div style="height:20px;">
+
+        </div>
   </div>
     
-<!--
-  <div id='sidebar' class='sidebar' style="display: yes;">
+
+  <div id='sidebar' class='sidebar' style="display: none;"
+  >
             
       <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
+
+       <div style="text-align: left; margin-left:1%;">
+               <form>
+          <input type="radio" name="rbtnlist_maptype" value="1" checked="true" onchange="handleChange(1);"/>Road map<br />
+          <input type="radio" name="rbtnlist_maptype" value="0" onchange="handleChange(0);" />Satellite<br />
+          <input type="radio" name="rbtnlist_maptype" value="2" onchange="handleChange(2);" />Hybrid<br />
+          <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(3);" />Terrain<br />
+        </form></div>
   <br><br>  
 
-  <br><br>
-
-</div>
+<!--  Näytettävät kohteet:
+  <select id="filtering_wfs" onchange="update()">
+          <option value="">Kaikki kohteet</option>
+    <option value="&CQL_FILTER=tyyppikoodi= 2120">Kuntosalit</option>
+          <option value="&CQL_FILTER=tyyppikoodi BETWEEN 3000 AND 3999">Uintikohteet</option>
+    <option value="&CQL_FILTER=tyyppikoodi BETWEEN 4000 AND 4999">Maastoliikuntapaikat</option>  
+        </select>
 -->   
+  <!-- Filtteröinnille valikko wms
+  Näytettävät kohteet:
+  <select id="filtering" onchange="updateFilter(value)">
+            <option value="BETWEEN 0 AND 99999999999999">Kaikki kohteet</option>
+      <option value="= 2120">Kuntosalit</option>
+            <option value="BETWEEN 3000 AND 3999">Uintikohteet</option>
+        </select>
+-->
+  <br><br>
+      
+  <!-- Paikannukselle nappula, tällä hetkellä asettaa reitinhaun aloitussijainnin -->
+<!--  <input type="checkbox" name="track" id="track"> Näytä oma sijainti</input>
+  <br> -->
+
+  <!-- Painettuna mahdollistaa uuden aloitussijainnin maarittamisen -->
+<!--  <button id="new_start" class="btn btn-primary">Lisää aloitussijainti</button>
+  <button class="btn btn-primary btn-round" onclick="alert('Lisää aloitussijainti navigoinnille.\nKlikkaa ensin Lisää aloitussijainti ja sitten haluamaasi kohtaa kartalla')">i</button>
+  <br>
+--> 
     <!-- Lisaa kartan halutulla koolla -->
     <div class="container-fluid">
   <div id="map">
     </div>
-   </div>
+   
  
     <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
 <!--    <div class="container-fluid">
