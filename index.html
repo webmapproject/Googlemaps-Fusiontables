@@ -1,460 +1,602 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-cabaple" content="yes"> 
+    <meta name="apple-mobile-web-app-cabaple" content="yes">
     <link href="nouislider.min.css" rel="stylesheet">
     <!-- Bootstarp scriptit -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <title>History of Helsinki buildings</title>
     <style>
-      html, body, #googft-mapCanvas {
-  overflow:hidden;
-  height:100%;
-  }
-          #header {
-  background-color:rgba(255, 255, 255, 0.7);
-  color:black;
-  text-align:center;
-  font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
-  position:absolute;
-  z-index:50;
-  right:0;
-  left:0;
-  top:0;
-  }
-      #footer {
-  background-color:#FF6600;
-  color:black;
-  clear:both;
-  text-align:left;
-  position:absolute;
-  width:100%;
-  bottom:0;
-  left:0;
-  right:0;
-  }
-      #map {
-  width:100%;
-  height:100%;
-  position:absolute;
-  left:0; 
-  }
+        html, body, #googft-mapCanvas {
+            overflow: hidden;
+            height: 100%;
+        }
 
-#googft-legend {
-  background-color: #fff;
-  border: 1px solid #000;
-  font-family: Arial,sans-serif;
-  font-size: 12px;
-  margin: 5px;
-  padding: 10px 10px 8px;
-}
+        #header {
+            background-color:black;
+            color: white;
+            text-align: center;
+            font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
+            position: absolute;
+            z-index: 50;
+            right: 0;
+            left: 0;
+            top: 0;
+        }
 
-#googft-legend p {
-  font-weight: bold;
-  margin-top: 0;
-}
+        #footer {
+            background-color: #FF6600;
+            color: black;
+            clear: both;
+            text-align: left;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
 
-#googft-legend div {
-  margin-bottom: 5px;
-}
+        #map {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+        }
 
-.googft-legend-swatch {
-  border: 1px solid;
-  float: left;
-  height: 12px;
-  margin-right: 8px;
-  width: 20px;
-}
+        #googft-legend {
+            background-color: #fff;
+            border: 1px solid #000;
+            font-family: Arial,sans-serif;
+            font-size: 12px;
+            margin: 5px;
+            padding: 10px 10px 8px;
+        }
 
-.googft-legend-range {
-  margin-left: 0;
-}
+            #googft-legend p {
+                font-weight: bold;
+                margin-top: 0;
+            }
 
-.googft-dot-icon {
-  margin-right: 8px;
-}
+            #googft-legend div {
+                margin-bottom: 5px;
+            }
 
-.googft-paddle-icon {
-  height: 24px;
-  left: -8px;
-  margin-right: -8px;
-  position: relative;
-  vertical-align: middle;
-  width: 24px;
-}
+        .googft-legend-swatch {
+            border: 1px solid;
+            float: left;
+            height: 12px;
+            margin-right: 8px;
+            width: 20px;
+        }
 
-.googft-legend-source {
-  margin-bottom: 0;
-  margin-top: 8px;
-}
+        .googft-legend-range {
+            margin-left: 0;
+        }
 
-.googft-legend-source a {
-  color: #666;
-  font-size: 11px;
-}
+        .googft-dot-icon {
+            margin-right: 8px;
+        }
 
+        .googft-paddle-icon {
+            height: 24px;
+            left: -8px;
+            margin-right: -8px;
+            position: relative;
+            vertical-align: middle;
+            width: 24px;
+        }
 
+        .googft-legend-source {
+            margin-bottom: 0;
+            margin-top: 8px;
+        }
 
-
-
-
-  .btn {
-    margin:3px;
-  } 
-
-    .btn-round { 
-    font-weight: bold;
-    width: 19px;
-    height: 19px;
-    text-align: center;
-    padding: 1px 0;
-    font-size: 13px;
-    line-height: 0.1;
-    border-radius: 30px;
-  }
+            .googft-legend-source a {
+                color: #666;
+                font-size: 11px;
+            }
 
 
-  .sidebar {
-  position:absolute;
-  top:0; right:0; width:250px;
-  bottom:0;
-  overflow-x:auto;
-  background-color:teal;
-  margin:0;
-  padding:5px;
-  font-size:15px;
-  border-radius:10px;
-  text-align:center;
-  z-index:80;
-  } 
 
-#slider {
-  height: 20px;
-  margin: 0 auto 30px;
-  width: 500px;
-}
-#beginYear span
-{
-  color:white;
-}
-#beginSpan
-{
-  font-size: 12px;
-  font-weight: bold;
-}
 
-#endYear span
-{
-  color:white;
-}
-#endSpan
-{
-  font-size: 12px;
-  font-weight: bold;
-}
+
+
+        .btn {
+            margin: 3px;
+        }
+
+        .btn-round {
+            font-weight: bold;
+            width: 19px;
+            height: 19px;
+            text-align: center;
+            padding: 1px 0;
+            font-size: 13px;
+            line-height: 0.1;
+            border-radius: 30px;
+        }
+
+        /* tarvitaanko tata?
+        .ol-toggle-options a {
+                background: rgba(255,255,255,0.5);
+                color: white;
+                display: block;
+                font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+                font-size: 19px;
+                font-weight: bold;
+                height: 18px;
+                line-height: 11px;
+                margin: 1px;
+                padding: 0;
+                text-align: center;
+                text-decoration: none;
+                width: 55px;
+                border-radius: 2px;
+              }
+              .ol-toggle-options a:hover {
+                color: #fff;
+                text-decoration: none;
+                background: rgba(0,60,136,0.7);
+              } */
+
+        .sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            bottom: 150;
+            overflow-x: auto;
+            background-color: #1d879f;
+            margin: 0;
+            padding: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 80;
+        }
+
+        /* Styles used by the default GetFeatureInfo output, added to make IE happy */
+        table.featureInfo, table.featureInfo td, table.featureInfo th {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            font-size: 90%;
+            padding: .2em .1em;
+        }
+
+            table.featureInfo th {
+                padding: .2em .2em;
+                font-weight: bold;
+                background: #eee;
+            }
+
+            table.featureInfo td {
+                background: #fff;
+            }
+
+            table.featureInfo tr.odd td {
+                background: #eee;
+            }
+
+            table.featureInfo caption {
+                text-align: left;
+                font-size: 100%;
+                font-weight: bold;
+                padding: .2em .2em;
+            }
+
+        /* erikokoisten nayttojen erot */
+
+        /* pieni naytto */
+        @media screen and (max-width:549px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .ol-toggle-options {
+                z-index: 1000;
+                position: absolute;
+                right: 7px;
+                bottom: 3px;
+            }
+            /* .btn{padding:5px 11px;} */
+            div span:last-of-type {
+                display: block;
+            }
+        }
+
+        /* keskikokoinen naytto */
+        @media screen and (min-width: 550px) and (max-width:800px) {
+            h1 {
+                font-size: 30px;
+            }
+
+            .ol-toggle-options {
+                z-index: 1000;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+        /* iso naytto */
+        @media screen and (min-width: 801px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .ol-toggle-options {
+                z-index: 1000;
+                position: absolute;
+                right: 10px;
+                bottom: 15px;
+            }
+        }
+
+        #slider {
+            height: 20px;
+            margin: 0 auto 30px;
+            width: 500px;
+        }
+
+        #beginYear span {
+            color: white;
+        }
+
+        #beginSpan {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        #endYear span {
+            color: white;
+        }
+
+        #endSpan {
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
-  </head>
+</head>
+<body onload="init()">
 
-  <body onload="init()">
-    
     <!-- google scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-   
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=visualization&amp;sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=visualization&amp;sensor=false"></script>
 
-
-
-    <!-- Function scripts -->  
+    <!-- Function scripts -->
     <script src="nouislider.min.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript">
 
 
 
 
-  var googlemap;
-  var sliderSet;
-  var mapType;
-
-  function initialize() {
-    var latSet = new google.maps.LatLng(60.18199466214881, 24.9424015570944);
-    mapType = google.maps.MapTypeId.ROADMAP;
-      update(13, latSet, mapType);
-      setBoarders();
-
-    }
-    function update(currentView, centercoords, maptype)
-    {
-          google.maps.visualRefresh = true;
-
-    var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) ||
-      (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
-
-    if (isMobile) {
-      var viewport = document.querySelector("meta[name=viewport]");
-      viewport.setAttribute('content', 'initial-scale=1.0, user-scalable=no');
-    }
-
-    var mapDiv = document.getElementById('googft-mapCanvas');
-    mapDiv.style.width = isMobile ? '100%' : '100%';
-    mapDiv.style.height = isMobile ? '100%' : '100%';
-
-var mapOptions = {
-      center: centercoords,
-      zoom: currentView,
-      mapTypeId: maptype
+        var googlemap;
+        var sliderSet;
+        var mapType;
+        var mapOptions;
 
 
-
-    };
-
-    var map = new google.maps.Map(mapDiv, mapOptions);
-    googlemap = map;
-    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend-open'));
-    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend'));
-
-    var t = slider.noUiSlider.get();
-        
-    layer = new google.maps.FusionTablesLayer({
-      map: map,
-      heatmap: { enabled: false },
-      query: {
-        select: "col21",
-        from: "1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960",
-        where: "Rakennusvuosi >= " + t[0] + " AND Rakennusvuosi <= " + t[1]
-      },
-      options: {
-        styleId: 1, 
-        templateId: 2
-      }
-    });
-    //console.log(layer);
-    if (isMobile) {
-      var legend = document.getElementById('googft-legend');
-      var legendOpenButton = document.getElementById('googft-legend-open');
-      var legendCloseButton = document.getElementById('googft-legend-close');
-      legend.style.display = 'none';
-      legendOpenButton.style.display = 'block';
-      legendCloseButton.style.display = 'block';
-      legendOpenButton.onclick = function() {
-        legend.style.display = 'block';
-        legendOpenButton.style.display = 'none';
-      }
-      legendCloseButton.onclick = function() {
-        legend.style.display = 'none';
-        legendOpenButton.style.display = 'block';
-      }
-    }
-  }
-
-  google.maps.event.addDomListener(window, 'load', initialize);
-
-
-    $( document ).ready(function() {
-     var slider = document.getElementById('slider');
-
-    sliderSet = noUiSlider.create(slider, {
-  start: [ 1700, 2013 ], // Handle start position
-  //step: 10, // Slider moves in increments of '10'
-  margin: 1, // Handles must be more than '20' apart
-  connect: true, // Display a colored bar between the handles
-  direction: 'ltr', // Put '0' at the bottom of the slider
-  orientation: 'horizontal', // Orient the slider vertically
-  behaviour: 'tap-drag', // Move handle on tap, bar is draggable
-  range: { // Slider can select '0' to '100'
-    'min': 1800,
-    'max': 2013
-  },
-  pips: { // Show a scale with the slider
-    mode: 'steps',
-    density: 2
-  }
-});
-slider.noUiSlider.on('end', function(){
-      var zoomi = googlemap.getZoom();
-      var centercoords = googlemap.getCenter();
-
-  update(zoomi, centercoords, mapType);
-});
-
-slider.noUiSlider.on('update', function(){
-  setDownBoarderhover();
-  setTopBoarderhover();
-});
-
-});
-
-    function setDownBoarderhover() {
-      $('.noUi-handle-lower').children().remove('div');
-      var t = sliderSet.get();
-      $('.noUi-handle-lower').append('<div id="beginYear"><br/><br/><span id="beginSpan">' + Math.round(t[0]) + '</span></div>');
-    }
-    function setTopBoarderhover() {
-      $('.noUi-handle-upper').children().remove('div');
-      var t = sliderSet.get();
-      $('.noUi-handle-upper').append('<div id="endYear"><br/><br/><span id="endSpan">' + Math.round(t[1]) + '</span></div>');
-    }
-
-function setBoarders() {
-      setDownBoarderhover();
-      setTopBoarderhover();
-}
-function handleChange(arvo) {
-  if(arvo == 0)
-  {
-    var zoomi = googlemap.getZoom();
-    var centercoords = googlemap.getCenter();
-    mapType = google.maps.MapTypeId.SATELLITE;
-    update(zoomi, centercoords, mapType);
-  }
-  if(arvo == 1)
-  {
-    var zoomi = googlemap.getZoom();
-    var centercoords = googlemap.getCenter();
-    mapType = google.maps.MapTypeId.ROADMAP;
-    update(zoomi, centercoords, mapType);
-  }
-  if(arvo == 2)
-  {
-    var zoomi = googlemap.getZoom();
-    var centercoords = googlemap.getCenter();
-    mapType = google.maps.MapTypeId.HYBRID;
-    update(zoomi, centercoords, mapType);
-  }
-  if(arvo == 3)
-  {
-    var zoomi = googlemap.getZoom();
-    var centercoords = googlemap.getCenter();
-
-    mapType = google.maps.MapTypeId.TERRAIN;
-    update(zoomi, centercoords, mapType);
-  }
-}
-</script>
-    
-
-<!-- Hiding the side panel -->
-    <script>
-      function toggleControlPanel(){
-        var sidebar = document.getElementById("sidebar");
-        if (sidebar.style.display == "none") {
-          sidebar.style.display = "block";
+        function initialize() {
+            var latSet = new google.maps.LatLng(60.18199466214881, 24.9424015570944);
+            mapType = google.maps.MapTypeId.SATELLITE;
+            update(13, latSet, mapType);
+            setBoarders();
         }
-        else {
-          sidebar.style.display = "none";
+        function update(currentView, centercoords, maptype) {
+            google.maps.visualRefresh = true;
+            var legendDiv = $('#googft-legend');
+            legendDiv.visibility = 'true';
+            var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) ||
+              (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
+
+            if (isMobile) {
+                var viewport = document.querySelector("meta[name=viewport]");
+                viewport.setAttribute('content', 'initial-scale=1.0, user-scalable=no');
+            }
+
+            var mapDiv = document.getElementById('googft-mapCanvas');
+            mapDiv.style.width = isMobile ? '100%' : '100%';
+            mapDiv.style.height = isMobile ? '100%' : '100%';
+            if (maptype != 'custom') {
+                mapOptions = {
+                    center: centercoords,
+                    zoom: currentView,
+                    mapTypeId: maptype
+                };
+            }
+
+            var map = new google.maps.Map(mapDiv, mapOptions);
+            googlemap = map;
+            //map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend-open'));
+            //map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('googft-legend'));
+
+            map.setZoom(currentView);
+
+            var t = slider.noUiSlider.get();
+
+            layer = new google.maps.FusionTablesLayer({
+                map: map,
+                heatmap: { enabled: false },
+                query: {
+                    select: "col21",
+                    from: "1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960",
+                    where: "Rakennusvuosi >= " + t[0] + " AND Rakennusvuosi <= " + t[1]
+                },
+                options: {
+                    styleId: 1,
+                    templateId: 2
+                }
+            });
+
+            if (isMobile) {
+                var legend = document.getElementById('googft-legend');
+                var legendOpenButton = document.getElementById('googft-legend-open');
+                var legendCloseButton = document.getElementById('googft-legend-close');
+                legend.style.display = 'none';
+                legendOpenButton.style.display = 'block';
+                legendCloseButton.style.display = 'block';
+                legendOpenButton.onclick = function () {
+                    legend.style.display = 'block';
+                    legendOpenButton.style.display = 'none';
+                }
+                legendCloseButton.onclick = function () {
+                    legend.style.display = 'none';
+                    legendOpenButton.style.display = 'block';
+                }
+            }
         }
-      }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+        $(document).ready(function () {
+            var slider = document.getElementById('slider');
+
+            sliderSet = noUiSlider.create(slider, {
+                start: [1700, 2013], // Handle start position
+                //step: 10, // Slider moves in increments of '10'
+                margin: 1, // Handles must be more than '20' apart
+                connect: true, // Display a colored bar between the handles
+                direction: 'ltr', // Put '0' at the bottom of the slider
+                orientation: 'horizontal', // Orient the slider vertically
+                behaviour: 'tap-drag', // Move handle on tap, bar is draggable
+                range: { // Slider can select '0' to '100'
+                    'min': 1700,
+                    'max': 2013
+                },
+                pips: { // Show a scale with the slider
+                    mode: 'steps',
+                    density: 2
+                }
+            });
+            //slider.noUiSlider.on('end', function () {
+            //    var zoomi = googlemap.getZoom();
+            //    var centercoords = googlemap.getCenter();
+
+            //    update(zoomi, centercoords, mapType);
+            //});
+
+            slider.noUiSlider.on('change', function () {
+                var zoomi = googlemap.getZoom();
+                var centercoords = googlemap.getCenter();
+
+                update(zoomi, centercoords, mapType);
+            });
+
+            slider.noUiSlider.on('update', function () {
+                setDownBoarderhover();
+                setTopBoarderhover();
+            });
+
+        });
+
+        function setDownBoarderhover() {
+            $('.noUi-handle-lower').children().remove('div');
+            var t = sliderSet.get();
+            $('.noUi-handle-lower').append('<div id="beginYear"><br/><br/><span id="beginSpan">' + Math.round(t[0]) + '</span></div>');
+        }
+        function setTopBoarderhover() {
+            $('.noUi-handle-upper').children().remove('div');
+            var t = sliderSet.get();
+            $('.noUi-handle-upper').append('<div id="endYear"><br/><br/><span id="endSpan">' + Math.round(t[1]) + '</span></div>');
+        }
+
+        function setBoarders() {
+            setDownBoarderhover();
+            setTopBoarderhover();
+        }
+        function handleChange(arvo) {
+            var zoomi = googlemap.getZoom();
+            var centercoords = googlemap.getCenter();
+            if (arvo == 0) {
+                mapType = google.maps.MapTypeId.SATELLITE;
+                update(zoomi, centercoords, mapType);
+            }
+            if (arvo == 1) {
+                mapType = google.maps.MapTypeId.ROADMAP;
+                update(zoomi, centercoords, mapType);
+            }
+            if (arvo == 2) {
+                mapType = google.maps.MapTypeId.HYBRID;
+                update(zoomi, centercoords, mapType);
+            }
+            if (arvo == 3) {
+                mapType = google.maps.MapTypeId.TERRAIN;
+                update(zoomi, centercoords, mapType);
+            }
+            if (arvo == 4) {
+                mapOptions = {
+                    center: centercoords,
+                    zoom: zoomi,
+                    styles: [{ "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "saturation": 36 }, { "color": "#000000" }, { "lightness": 40 }] }, { "featureType": "all", "elementType": "labels.text.stroke", "stylers": [{ "visibility": "off" }, { "color": "#000000" }, { "lightness": 16 }] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#000000" }, { "lightness": 20 }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#000000" }, { "lightness": 21 }] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#000000" }, { "lightness": 17 }] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#000000" }, { "lightness": 29 }, { "weight": 0.2 }] }, { "featureType": "road.arterial", "elementType": "geometry", "stylers": [{ "color": "#000000" }, { "lightness": 18 }] }, { "featureType": "road.local", "elementType": "geometry", "stylers": [{ "color": "#000000" }, { "lightness": 16 }] }, { "featureType": "transit", "elementType": "geometry", "stylers": [{ "color": "#000000" }, { "lightness": 19 }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#0f252e" }, { "lightness": 17 }] }]
+                };
+                mapType = 'custom';
+                update(zoomi, centercoords, 'custom');
+            }
+            if (arvo == 5) {
+                mapOptions = {
+                    center: centercoords,
+                    zoom: zoomi,
+                    styles: [{"featureType":"all","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"all","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"labels.text","stylers":[{"visibility":"off"},{"weight":"0.01"}]},{"featureType":"administrative.neighborhood","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"administrative.neighborhood","elementType":"geometry.stroke","stylers":[{"visibility":"on"}]},{"featureType":"administrative.neighborhood","elementType":"labels","stylers":[{"visibility":"simplified"},{"color":"#272020"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"administrative.neighborhood","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#1d879f"},{"saturation":"-30"},{"lightness":"30"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#1d879f"},{"lightness":"30"},{"saturation":"-30"}]},{"featureType":"poi.attraction","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.attraction","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"color":"#1d879f"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"road.highway.controlled_access","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"color":"#1d879f"},{"saturation":"-30"},{"lightness":"35"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#1d879f"}]}]
+                };
+                mapType = 'custom';
+                update(zoomi, centercoords, 'custom');
+            }
+            if (arvo == 6) {
+                mapOptions = {
+                    center: centercoords,
+                    zoom: zoomi,
+                    styles: [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"all","stylers":[{"color":"#dd1f1f"}]},{"featureType":"landscape","elementType":"all","stylers":[{"saturation":-100},{"lightness":65}]},{"featureType":"landscape.man_made","elementType":"all","stylers":[{"visibility":"off"},{"saturation":"-26"},{"lightness":"19"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"weight":"2.75"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural.landcover","elementType":"all","stylers":[{"color":"#ba3737"}]},{"featureType":"poi","elementType":"all","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"saturation":-100},{"visibility":"simplified"},{"lightness":"80"},{"color":"#d9d9d9"}]},{"featureType":"road.highway.controlled_access","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"saturation":-100},{"lightness":30}]},{"featureType":"road.local","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#f0f0f0"}]},{"featureType":"road.local","elementType":"geometry.stroke","stylers":[{"gamma":"2.02"}]},{"featureType":"transit","elementType":"all","stylers":[{"saturation":"-100"},{"visibility":"off"}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#cecece"}]},{"featureType":"transit.line","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"lightness":"3"},{"saturation":-97},{"visibility":"simplified"},{"color":"#d6d6d6"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"off"},{"lightness":-25},{"saturation":-100},{"hue":"#fdff00"}]}]
+                };
+                mapType = 'custom';
+                update(zoomi, centercoords, 'custom');
+            }
+
+        }
     </script>
 
+    <!-- Hiding the side panel -->
+    <script>
+        function toggleControlPanel() {
+            var sidebar = document.getElementById("sidebar");
+            if (sidebar.style.display == "none") {
+                sidebar.style.display = "block";
+            }
+            else {
+                sidebar.style.display = "none";
+            }
+        }
+    </script>
 
-
-<body>
-  <div id="googft-mapCanvas"></div>
-  <input id="googft-legend-open" style="display:none" type="button" value="Legend"></input>
-  <div id="googft-legend">
-
-    <p id="googft-legend-title">Building year</p>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #ff0000"></span>
-      <span class="googft-legend-range">1700 to 1930</span>
+    <div id="googft-mapCanvas"></div>
+    <input id="googft-legend-open" style="display:none" type="button" value="Legend"/>
+    <div id="googft-legend">
+        <p id="googft-legend-title">Building year</p>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #ff0000"></span>
+            <span class="googft-legend-range">1700 to 1930</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #783f04"></span>
+            <span class="googft-legend-range">1930 to 1950</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #ff9900"></span>
+            <span class="googft-legend-range">1950 to 1960</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #00ff00"></span>
+            <span class="googft-legend-range">1960 to 1970</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #6fa8dc"></span>
+            <span class="googft-legend-range">1970 to 1980</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #0b5394"></span>
+            <span class="googft-legend-range">1980 to 1990</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #351c75"></span>
+            <span class="googft-legend-range">1990 to 2000</span>
+        </div>
+        <div>
+            <span class="googft-legend-swatch"
+                  style="background-color: #4c1130"></span>
+            <span class="googft-legend-range">2000 to 2013</span>
+        </div>
+        <div class="googft-legend-source">
+            <a href="http://www.google.com/fusiontables/DataSource?docid=1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960" target="_blank"></a>
+        </div>
+        <input id="googft-legend-close" style="display:none" type="button" value="Hide"/>
     </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #783f04"></span>
-      <span class="googft-legend-range">1930 to 1950</span>
-    </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #ff9900"></span>
-      <span class="googft-legend-range">1950 to 1960</span>
-    </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #00ff00"></span>
-      <span class="googft-legend-range">1960 to 1970</span>
-    </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #6fa8dc"></span>
-      <span class="googft-legend-range">1970 to 1980</span>
-    </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #0b5394"></span>
-      <span class="googft-legend-range">1980 to 1990</span>
-    </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #351c75"></span>
-      <span class="googft-legend-range">1990 to 2000</span>
-    </div>
-    <div>
-      <span class="googft-legend-swatch" 
-style="background-color: #4c1130"></span>
-      <span class="googft-legend-range">2000 to 2013</span>
-    </div>
-    <div class="googft-legend-source">
-      <a href="http://www.google.com/fusiontables/DataSource?docid=1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960" target="_blank"></a>
-    </div>
-    <input id="googft-legend-close" style="display:none" type="button" value="Hide"></input>
-  </div>
-
 
     <!-- Header osio, johon tulee otsikko ja ehka joki valikko -->
     <div class="container-fluid">
-    <div id="header">
-        <h1><span>Helsinki Building years</span></h1>
-       
-      <div class="ol-toggle-options">  
-     <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Menu</button>   
+        <div id="header">
+            <h1><span>History of Helsinki</span></h1>
+
+            <div class="ol-toggle-options">
+                <button class="btn btn-primary" title="Sivupalkki" onclick="toggleControlPanel()" href="#toggle">Menu</button>
+            </div>
+            <div id="slider">
+            </div>
+            <div>
+            </div>
+            <div style="height:20px;">
+            </div>
         </div>
-        <div id="slider">
 
-        </div>
-        <div>
+        <div id='sidebar' class='sidebar' style="display: none;">
 
-        </div>
-        <div style="height:20px;">
+            <button class="btn btn-primary" title="Sivupalkki" onclick="toggleControlPanel()" href="#toggle">Hide menu</button>
+            <div style="text-align: left; margin-left:1%;">
+                <form>
+                    <br>
+                    <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(4);" />Dark<br />
+                    <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(5);" />Blue<br />
+                    <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(6);" />Light<br />
+                    <input type="radio" name="rbtnlist_maptype" value="0" checked="checked" onchange="handleChange(0);" />Satellite<br />
+                    <input type="radio" name="rbtnlist_maptype" value="1" onchange="handleChange(1);" />Road map<br />
+                    <input type="radio" name="rbtnlist_maptype" value="2" onchange="handleChange(2);" />Hybrid<br />
+                    <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(3);" />Terrain<br />
 
-        </div>
-  </div>
-    
+                </form>
+            </div>
+            <br><br>
+            <!--  Näytettävät kohteet:
+              <select id="filtering_wfs" onchange="update()">
+                      <option value="">Kaikki kohteet</option>
+                <option value="&CQL_FILTER=tyyppikoodi= 2120">Kuntosalit</option>
+                      <option value="&CQL_FILTER=tyyppikoodi BETWEEN 3000 AND 3999">Uintikohteet</option>
+                <option value="&CQL_FILTER=tyyppikoodi BETWEEN 4000 AND 4999">Maastoliikuntapaikat</option>
+                    </select>
+            -->
+            <!-- Filtteröinnille valikko wms
+              Näytettävät kohteet:
+              <select id="filtering" onchange="updateFilter(value)">
+                        <option value="BETWEEN 0 AND 99999999999999">Kaikki kohteet</option>
+                  <option value="= 2120">Kuntosalit</option>
+                        <option value="BETWEEN 3000 AND 3999">Uintikohteet</option>
+                    </select>
+            -->
+            <br><br>
 
-  <div id='sidebar' class='sidebar' style="display: none;"
-  >
-            
-      <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Hide menu</button>   
+            <!-- Paikannukselle nappula, tällä hetkellä asettaa reitinhaun aloitussijainnin -->
+            <!--  <input type="checkbox" name="track" id="track"> Näytä oma sijainti</input>
+              <br> -->
+            <!-- Painettuna mahdollistaa uuden aloitussijainnin maarittamisen -->
+            <!--  <button id="new_start" class="btn btn-primary">Lisää aloitussijainti</button>
+              <button class="btn btn-primary btn-round" onclick="alert('Lisää aloitussijainti navigoinnille.\nKlikkaa ensin Lisää aloitussijainti ja sitten haluamaasi kohtaa kartalla')">i</button>
+              <br>
+            -->
+            <!-- Lisaa kartan halutulla koolla -->
+            <div class="container-fluid">
+                <div id="map">
+                </div>
 
-       <div style="text-align: left; margin-left:1%;">
-               <form>
-          <input type="radio" name="rbtnlist_maptype" value="1" checked="true" onchange="handleChange(1);"/>Road map<br />
-          <input type="radio" name="rbtnlist_maptype" value="0" onchange="handleChange(0);" />Satellite<br />
-          <input type="radio" name="rbtnlist_maptype" value="2" onchange="handleChange(2);" />Hybrid<br />
-          <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(3);" />Terrain<br />
-        </form></div>
-  <br><br>  
-</div>
 
-    <!-- Lisaa kartan halutulla koolla -->
-    <div class="container-fluid">
-  <div id="map">
-    </div>
-   
- 
-    <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
-<!--    <div class="container-fluid">
-  <div id="footer">
-        <p> Web Map Project</p>
-  </div>
-    </div>
--->  
-  </body>
+                <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
+                <!--    <div class="container-fluid">
+                  <div id="footer">
+                        <p> Web Map Project</p>
+                  </div>
+                    </div>
+                -->
+</body>
 </html>
-
-
