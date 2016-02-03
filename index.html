@@ -6,9 +6,9 @@
     <meta name="apple-mobile-web-app-cabaple" content="yes">
     <link href="nouislider.min.css" rel="stylesheet">
     <!-- Bootstarp scriptit -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <title>History of Helsinki buildings</title>
     <style>
@@ -18,8 +18,8 @@
         }
 
         #header {
-            background-color:black;
-            color: white;
+            background-image: url("dark.png");
+            color: transparent;
             text-align: center;
             font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
             position: absolute;
@@ -29,7 +29,7 @@
             top: 0;
         }
 
-        #footer {
+        /*#footer {
             background-color: #FF6600;
             color: black;
             clear: both;
@@ -40,7 +40,7 @@
             left: 0;
             right: 0;
         }
-
+        */
         #map {
             width: 100%;
             height: 100%;
@@ -48,80 +48,32 @@
             left: 0;
         }
 
-        #googft-legend {
-            background-color: #fff;
-            border: 1px solid #000;
-            font-family: Arial,sans-serif;
-            font-size: 12px;
-            margin: 5px;
-            padding: 10px 10px 8px;
+        
+
+        a:link {
+            color: black;
+            background-color: transparent;
+            text-decoration: none;
+        }
+        a:visited {
+            color: black;
+            background-color: transparent;
+            text-decoration: none;
+        }
+        a:hover {
+            color: black;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+        a:active {
+            color: black;
+            background-color: transparent;
+            text-decoration: underline;
         }
 
-            #googft-legend p {
-                font-weight: bold;
-                margin-top: 0;
-            }
-
-            #googft-legend div {
-                margin-bottom: 5px;
-            }
-
-        .googft-legend-swatch {
-            border: 1px solid;
-            float: left;
-            height: 12px;
-            margin-right: 8px;
-            width: 20px;
-        }
-
-        .googft-legend-range {
-            margin-left: 0;
-        }
-
-        .googft-dot-icon {
-            margin-right: 8px;
-        }
-
-        .googft-paddle-icon {
-            height: 24px;
-            left: -8px;
-            margin-right: -8px;
-            position: relative;
-            vertical-align: middle;
-            width: 24px;
-        }
-
-        .googft-legend-source {
-            margin-bottom: 0;
-            margin-top: 8px;
-        }
-
-            .googft-legend-source a {
-                color: #666;
-                font-size: 11px;
-            }
 
 
-
-
-
-
-        .btn {
-            margin: 3px;
-        }
-
-        .btn-round {
-            font-weight: bold;
-            width: 19px;
-            height: 19px;
-            text-align: center;
-            padding: 1px 0;
-            font-size: 13px;
-            line-height: 0.1;
-            border-radius: 30px;
-        }
-
-        /* tarvitaanko tata?
+        /* this messes up something
         .ol-toggle-options a {
                 background: rgba(255,255,255,0.5);
                 color: white;
@@ -148,13 +100,14 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 150px;
+            width: 250px;
             bottom: 150;
             overflow-x: auto;
             background-color: #1d879f;
+            font-family: "Lucida Sans Unicode", Lucida Grande, sans-serif;
             margin: 0;
             padding: 5px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             border-radius: 10px;
             text-align: center;
@@ -282,12 +235,20 @@
         var sliderSet;
         var mapType;
         var mapOptions;
+        var rakennustyyppi;
 
 
         function initialize() {
             var latSet = new google.maps.LatLng(60.18199466214881, 24.9424015570944);
-            mapType = google.maps.MapTypeId.SATELLITE;
-            update(13, latSet, mapType);
+            //mapType = google.maps.MapTypeId.SATELLITE;
+
+            mapOptions = {
+                center: latSet,
+                zoom: 13,
+                styles: [{ "featureType": "all", "elementType": "geometry", "stylers": [{ "visibility": "on" }] }, { "featureType": "all", "elementType": "labels.text", "stylers": [{ "visibility": "off" }] }, { "featureType": "all", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "administrative.locality", "elementType": "labels.text", "stylers": [{ "visibility": "off" }, { "weight": "0.01" }] }, { "featureType": "administrative.neighborhood", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative.neighborhood", "elementType": "geometry.stroke", "stylers": [{ "visibility": "on" }] }, { "featureType": "administrative.neighborhood", "elementType": "labels", "stylers": [{ "visibility": "simplified" }, { "color": "#272020" }] }, { "featureType": "administrative.neighborhood", "elementType": "labels.text", "stylers": [{ "visibility": "off" }] }, { "featureType": "administrative.neighborhood", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#1d879f" }, { "saturation": "-30" }, { "lightness": "30" }] }, { "featureType": "poi", "elementType": "geometry.fill", "stylers": [{ "color": "#1d879f" }, { "lightness": "30" }, { "saturation": "-30" }] }, { "featureType": "poi.attraction", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.attraction", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.business", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "color": "#1d879f" }] }, { "featureType": "road.highway.controlled_access", "elementType": "geometry.fill", "stylers": [{ "visibility": "off" }] }, { "featureType": "road.highway.controlled_access", "elementType": "geometry.stroke", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "color": "#1d879f" }, { "saturation": "-30" }, { "lightness": "35" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "water", "elementType": "geometry.fill", "stylers": [{ "color": "#1d879f" }] }]
+            };
+            rakennustyyppi = 100;
+            update(13, latSet, 'custom');
             setBoarders();
         }
         function update(currentView, centercoords, maptype) {
@@ -328,7 +289,7 @@
                 query: {
                     select: "col21",
                     from: "1Cjp5kwTFW1zb7rCRILUg6PryPwo_9RkkM4kD960",
-                    where: "Rakennusvuosi >= " + t[0] + " AND Rakennusvuosi <= " + t[1]
+                    where: "Rakennusvuosi >= " + t[0] + " AND Rakennusvuosi <= " + t[1] //+ " AND     'Käyttötarkoitus 1' = " + rakennustyyppi
                 },
                 options: {
                     styleId: 1,
@@ -454,7 +415,7 @@
                 mapOptions = {
                     center: centercoords,
                     zoom: zoomi,
-                    styles: [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"all","stylers":[{"color":"#dd1f1f"}]},{"featureType":"landscape","elementType":"all","stylers":[{"saturation":-100},{"lightness":65}]},{"featureType":"landscape.man_made","elementType":"all","stylers":[{"visibility":"off"},{"saturation":"-26"},{"lightness":"19"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"weight":"2.75"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural.landcover","elementType":"all","stylers":[{"color":"#ba3737"}]},{"featureType":"poi","elementType":"all","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"saturation":-100},{"visibility":"simplified"},{"lightness":"80"},{"color":"#d9d9d9"}]},{"featureType":"road.highway.controlled_access","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"saturation":-100},{"lightness":30}]},{"featureType":"road.local","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#f0f0f0"}]},{"featureType":"road.local","elementType":"geometry.stroke","stylers":[{"gamma":"2.02"}]},{"featureType":"transit","elementType":"all","stylers":[{"saturation":"-100"},{"visibility":"off"}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#cecece"}]},{"featureType":"transit.line","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"lightness":"3"},{"saturation":-97},{"visibility":"simplified"},{"color":"#d6d6d6"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"off"},{"lightness":-25},{"saturation":-100},{"hue":"#fdff00"}]}]
+                    styles: [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.province","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"all","stylers":[{"color":"#dd1f1f"}]},{"featureType":"landscape","elementType":"all","stylers":[{"saturation":-100},{"lightness":65}]},{"featureType":"landscape.man_made","elementType":"all","stylers":[{"visibility":"off"},{"saturation":"-26"},{"lightness":"19"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"weight":"2.75"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural.landcover","elementType":"all","stylers":[{"color":"#ba3737"}]},{"featureType":"poi","elementType":"all","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"saturation":-100},{"visibility":"simplified"},{"lightness":"80"},{"color":"#d9d9d9"}]},{"featureType":"road.highway.controlled_access","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"saturation":-100},{"lightness":30}]},{"featureType":"road.local","elementType":"all","stylers":[{"visibility":"off"},{"color":"#f0f0f0"}]},{"featureType":"road.local","elementType":"geometry.stroke","stylers":[{"gamma":"2.02"}]},{"featureType":"transit","elementType":"all","stylers":[{"saturation":"-100"},{"visibility":"off"}]},{"featureType":"transit","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit.line","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#cecece"}]},{"featureType":"transit.line","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"lightness":"3"},{"saturation":-97},{"visibility":"simplified"},{"color":"#d6d6d6"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"off"},{"lightness":-25},{"saturation":-100},{"hue":"#fdff00"}]}]
                 };
                 mapType = 'custom';
                 update(zoomi, centercoords, 'custom');
@@ -477,6 +438,10 @@
     </script>
 
     <div id="googft-mapCanvas"></div>
+    
+
+   <!--     Legend from fusion tables
+
     <input id="googft-legend-open" style="display:none" type="button" value="Legend"/>
     <div id="googft-legend">
         <p id="googft-legend-title">Building year</p>
@@ -525,20 +490,35 @@
         </div>
         <input id="googft-legend-close" style="display:none" type="button" value="Hide"/>
     </div>
+    -->
 
-    <!-- Header osio, johon tulee otsikko ja ehka joki valikko -->
+    <!-- Header  -->
     <div class="container-fluid">
         <div id="header">
-            <h1><span>History of Helsinki</span></h1>
+            <h2><span>History of Helsinki</span></h2>
 
             <div class="ol-toggle-options">
                 <button class="btn btn-primary" title="Sivupalkki" onclick="toggleControlPanel()" href="#toggle">Menu</button>
+
             </div>
             <div id="slider">
             </div>
-            <div>
-            </div>
             <div style="height:20px;">
+
+
+            <div class="btn-group">
+              <button class="btn btn-primary">Building types</button>
+              <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input type="checkbox"-<label for="ID">Label</label></li>
+                  <li><a href="#">HTML</a></li>
+                  <li><a href="#">CSS</a></li>
+                  <li><a href="#">JavaScript</a></li>
+                  <!-- Other items -->
+                </ul>
+            </div>
+
+            
             </div>
         </div>
 
@@ -547,51 +527,34 @@
             <button class="btn btn-primary" title="Sivupalkki" onclick="toggleControlPanel()" href="#toggle">Hide menu</button>
             <div style="text-align: left; margin-left:1%;">
                 <form>
-                    <br>
-                    <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(5);" />Blue<br />
+                    <h4> Select basemap: </h4>
+                    <input type="radio" name="rbtnlist_maptype" value="3" checked="checked" onchange="handleChange(5);" />Blue<br />
                     <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(4);" />Dark<br />
                     <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(6);" />Light<br />
-                    <input type="radio" name="rbtnlist_maptype" value="0" checked="checked" onchange="handleChange(0);" />Satellite<br />
+                    <input type="radio" name="rbtnlist_maptype" value="0" onchange="handleChange(0);" />Satellite<br />
                     <input type="radio" name="rbtnlist_maptype" value="1" onchange="handleChange(1);" />Road map<br />
                     <input type="radio" name="rbtnlist_maptype" value="2" onchange="handleChange(2);" />Hybrid<br />
                     <input type="radio" name="rbtnlist_maptype" value="3" onchange="handleChange(3);" />Terrain<br />
+                    <br>
+                    <br>
+                    <h4><link> Helsinki building data: </link> </h4>
+                    <a href="http://www.hri.fi/fi/data/helsingin-kaupungin-rakennusrekisterin-ote-62012/">Helsingin kaupungin rakennusrekisterin ote 6/2012 </a>
+                    <br>
+                    <br>
+                    <h4> Developer team: </h4>
+                    Miska Kauppinen<br />
+                    Gabriela Adamczyk<br />
+                    Juhani Keskitalo<br />
+                    
+                    
 
                 </form>
             </div>
-            <br><br>
-            <!--  Näytettävät kohteet:
-              <select id="filtering_wfs" onchange="update()">
-                      <option value="">Kaikki kohteet</option>
-                <option value="&CQL_FILTER=tyyppikoodi= 2120">Kuntosalit</option>
-                      <option value="&CQL_FILTER=tyyppikoodi BETWEEN 3000 AND 3999">Uintikohteet</option>
-                <option value="&CQL_FILTER=tyyppikoodi BETWEEN 4000 AND 4999">Maastoliikuntapaikat</option>
-                    </select>
-            -->
-            <!-- Filtteröinnille valikko wms
-              Näytettävät kohteet:
-              <select id="filtering" onchange="updateFilter(value)">
-                        <option value="BETWEEN 0 AND 99999999999999">Kaikki kohteet</option>
-                  <option value="= 2120">Kuntosalit</option>
-                        <option value="BETWEEN 3000 AND 3999">Uintikohteet</option>
-                    </select>
-            -->
-            <br><br>
+           
+       
+            
 
-            <!-- Paikannukselle nappula, tällä hetkellä asettaa reitinhaun aloitussijainnin -->
-            <!--  <input type="checkbox" name="track" id="track"> Näytä oma sijainti</input>
-              <br> -->
-            <!-- Painettuna mahdollistaa uuden aloitussijainnin maarittamisen -->
-            <!--  <button id="new_start" class="btn btn-primary">Lisää aloitussijainti</button>
-              <button class="btn btn-primary btn-round" onclick="alert('Lisää aloitussijainti navigoinnille.\nKlikkaa ensin Lisää aloitussijainti ja sitten haluamaasi kohtaa kartalla')">i</button>
-              <br>
-            -->
-            <!-- Lisaa kartan halutulla koolla -->
-            <div class="container-fluid">
-                <div id="map">
-                </div>
-
-
-                <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
+                <!-- possible footer -->
                 <!--    <div class="container-fluid">
                   <div id="footer">
                         <p> Web Map Project</p>
