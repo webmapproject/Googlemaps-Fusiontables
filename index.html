@@ -352,6 +352,8 @@
                 update(zoomi, centercoords, mapType);
             });
 
+            document.getElementById('nodelist').innerHTML = "vaihto" + t
+
             slider.noUiSlider.on('update', function () {
                 setDownBoarderhover();
                 setTopBoarderhover();
@@ -362,6 +364,9 @@
         function setDownBoarderhover() {
             $('.noUi-handle-lower').children().remove('div');
             var t = sliderSet.get();
+            
+            document.getElementById('nodelist').innerHTML = "jotain" + t//'<iframe seamless src="' + t + '"></iframe>';
+            
             $('.noUi-handle-lower').append('<div id="beginYear"><br/><br/><span id="beginSpan">' + Math.round(t[0]) + '</span></div>');
         }
         function setTopBoarderhover() {
@@ -540,6 +545,9 @@
                     <h4><link> Helsinki building data: </link> </h4>
                     <a href="http://www.hri.fi/fi/data/helsingin-kaupungin-rakennusrekisterin-ote-62012/">Helsingin kaupungin rakennusrekisterin ote 6/2012 </a>
                     <br>
+                    <div id="nodelist">
+        		        <em>Click on the map to get feature info</em>
+    		        </div>
                     <br>
                     <h4> Developer team: </h4>
                     Miska Kauppinen<br />
