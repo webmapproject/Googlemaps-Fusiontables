@@ -352,14 +352,13 @@
                 update(zoomi, centercoords, mapType);
             });
 
-
-            var t = sliderSet.get();
-            document.getElementById('nodelist').innerHTML = "vaihto" + t
-
             slider.noUiSlider.on('update', function () {
                 setDownBoarderhover();
                 setTopBoarderhover();
             });
+            
+            var t = sliderSet.get();
+            document.getElementById('nodelist').innerHTML = "vaihto" + t
 
         });
 
